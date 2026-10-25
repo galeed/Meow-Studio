@@ -4,308 +4,731 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MEOW STUDIO</title>
-  <link rel="stylesheet" href="styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== RESET & BASE ===== */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f4f1de;
+      --ink: #111111;
+      --accent: #ff5c38;
+      --accent-2: #ffd60a;
+      --accent-3: #4361ee;
+      --accent-4: #06d6a0;
+      --card: #ffffff;
+      --shadow: 6px 6px 0 var(--ink);
+      --border: 3px solid var(--ink);
+      --radius: 14px;
+    }
+
+    body {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.4;
+      padding: 24px;
+      padding-bottom: 120px; /* Espacio para la barra inferior */
+    }
+
+    .app { max-width: 1200px; margin: 0 auto; }
+
+    /* ===== VISTAS ===== */
+    .view {
+      display: none;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    .view.active-view { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== HEADER GENERAL ===== */
+    .header {
+      background: var(--accent-2);
+      border: var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      margin-bottom: 32px;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -1px;
+      text-transform: uppercase;
+    }
+
+    .menu-btn {
+      background: var(--card);
+      border: var(--border);
+      border-radius: 12px;
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      box-shadow: 3px 3px 0 var(--ink);
+      transition: transform .1s, box-shadow .1s;
+    }
+    .menu-btn:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--ink); }
+    .menu-btn svg { width: 24px; height: 24px; }
+
+    /* ===== BOTONES ===== */
+    .btn {
+      font-family: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      border: var(--border);
+      border-radius: 10px;
+      padding: 8px 16px;
+      box-shadow: 3px 3px 0 var(--ink);
+      transition: transform .1s, box-shadow .1s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--ink); }
+
+    .btn-outline { background: var(--card); }
+    
+    .btn-dark {
+      background: var(--ink);
+      color: var(--card);
+      box-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+    }
+    .btn-dark:hover { box-shadow: 5px 5px 0 rgba(0,0,0,0.3); }
+    .btn-dark svg { width: 20px; height: 20px; }
+
+    /* ===== PERFIL Y MÉTRICAS ===== */
+    .profile-card {
+      background: var(--card);
+      border: var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+
+    .card-label, .workspace-label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #666;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .profile-brand {
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: -1px;
+      margin-bottom: 8px;
+    }
+
+    .profile-desc {
+      font-size: 1.1rem;
+      margin-bottom: 24px;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .metric-box {
+      background: var(--card);
+      border: 2px solid var(--ink);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 3px 3px 0 var(--ink);
+    }
+    .metric-box .num {
+      display: block;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .metric-box .label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* ===== SECCIONES GENERALES ===== */
+    .section { margin-bottom: 40px; }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+    }
+
+    .section-desc { font-size: .95rem; margin-bottom: 16px; max-width: 720px; }
+
+    .notice {
+      background: #fff3cd;
+      border: var(--border);
+      border-left: 10px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 20px;
+      box-shadow: 4px 4px 0 var(--ink);
+    }
+    .notice strong { display: block; margin-bottom: 4px; }
+    .notice p { font-size: .9rem; }
+
+    /* ===== CUENTAS CONECTADAS ===== */
+    .accounts-header {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .accounts-header h3 { font-size: 1.1rem; text-transform: uppercase; }
+
+    .badge {
+      font-size: .75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      background: var(--accent-3);
+      color: #fff;
+      padding: 4px 12px;
+      border: var(--border);
+      border-radius: 999px;
+      box-shadow: 2px 2px 0 var(--ink);
+    }
+    .badge-pro { background: var(--accent); }
+
+    .accounts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border: var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+      transition: transform .12s, box-shadow .12s;
+    }
+    .card:hover { transform: translate(-3px,-3px); box-shadow: 9px 9px 0 var(--ink); }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .platform-icon { font-size: 1.4rem; }
+
+    .status {
+      font-size: .65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border: 2px solid var(--ink);
+      border-radius: 999px;
+    }
+    .connected-tag { background: var(--accent-4); }
+    .available-tag { background: #e0e0e0; }
+
+    .card h4 { font-size: 1rem; margin-bottom: 2px; }
+    .card p { font-size: .8rem; margin-bottom: 10px; }
+
+    .stat { font-weight: 700; font-size: .9rem; margin-bottom: 10px; }
+
+    .tier {
+      display: inline-block;
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .5px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: #e0e0e0;
+      border: 2px solid var(--ink);
+    }
+    .tier-pro { background: var(--accent-2); }
+
+    .connected { background: #eafff7; }
+    .available { background: var(--card); }
+
+    /* Mini tarjetas de cuentas */
+    .connected-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .card.mini { background: #eafff7; }
+    .card.mini h4 { margin-bottom: 12px; }
+    .mini-stats { display: flex; justify-content: space-between; gap: 8px; }
+    .mini-stats div { display: flex; flex-direction: column; align-items: center; font-size: .7rem; text-align: center; }
+    .mini-stats strong { font-size: .95rem; }
+    .mini-stats span { text-transform: uppercase; letter-spacing: .4px; }
+
+    /* ===== EDITOR MULTIPLATAFORMA ===== */
+    .editor-section {
+      background: #ffffff;
+      border: var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+    }
+
+    .breadcrumb { font-size: 0.9rem; font-weight: 700; margin-bottom: 24px; }
+    .breadcrumb span { cursor: pointer; }
+    .breadcrumb span:hover { text-decoration: underline; }
+
+    .editor-header { margin-bottom: 20px; }
+    .title-wrap { display: flex; align-items: flex-start; gap: 12px; }
+    .title-icon { width: 28px; height: 28px; margin-top: 4px; }
+    .main-title { font-size: 2.2rem; font-weight: 700; line-height: 1; text-transform: uppercase; letter-spacing: -1px; }
+
+    .thick-divider { border: none; border-top: 4px solid var(--ink); margin: 0 -24px 24px -24px; }
+
+    .editor-container {
+      border: var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      background: var(--bg);
+      box-shadow: 4px 4px 0 var(--ink);
+    }
+
+    .post-textarea {
+      width: 100%;
+      height: 140px;
+      padding: 16px;
+      border: 2px solid var(--ink);
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 1rem;
+      resize: none;
+      background: var(--card);
+      box-shadow: 2px 2px 0 var(--ink);
+      margin-bottom: 20px;
+    }
+    .post-textarea:focus { outline: none; box-shadow: 4px 4px 0 var(--ink); }
+    .post-textarea::placeholder { color: #999; }
+
+    .action-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }
+
+    .btn-editor {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 12px;
+      background: var(--card);
+      border: 2px solid var(--ink);
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 3px 3px 0 var(--ink);
+      transition: transform .1s, box-shadow .1s;
+    }
+    .btn-editor:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ink); }
+    .btn-editor svg { width: 18px; height: 18px; }
+
+    .post-settings h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; }
+
+    .tabs-container {
+      display: flex;
+      border: 2px solid var(--ink);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 24px;
+      background: var(--card);
+    }
+    .tab {
+      flex: 1;
+      padding: 10px;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.9rem;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: #666;
+    }
+    .tab.active { background: var(--ink); color: var(--card); }
+
+    .slider-group { margin-bottom: 20px; }
+    .slider-group label { display: block; font-size: 0.9rem; font-weight: 700; margin-bottom: 8px; }
+
+    .neo-slider {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 8px;
+      background: #e0e0e0;
+      border-radius: 999px;
+      outline: none;
+      border: 2px solid var(--ink);
+    }
+    .neo-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--card);
+      border: 2px solid var(--ink);
+      cursor: pointer;
+      box-shadow: 1px 1px 0 var(--ink);
+    }
+    .neo-slider::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--card);
+      border: 2px solid var(--ink);
+      cursor: pointer;
+      box-shadow: 1px 1px 0 var(--ink);
+    }
+
+    /* Previews del creador */
+    .editor-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+    .preview-box {
+      min-height: 160px;
+      background: var(--card);
+      border: 3px dashed var(--ink);
+      border-radius: var(--radius);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      box-shadow: 4px 4px 0 var(--ink);
+    }
+    .preview-box p { font-size: .85rem; opacity: .7; max-width: 220px; }
+    .preview-spotify { background: #e8f5e9; }
+    .live-tag {
+      font-size: .7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      background: var(--ink);
+      color: var(--accent-2);
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    /* ===== BARRA DE NAVEGACIÓN INFERIOR ===== */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: var(--card);
+      border-top: 3px solid var(--ink);
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 8px 20px 8px;
+      z-index: 1000;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+      color: var(--ink);
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 10px;
+      border-radius: 12px;
+      min-width: 64px;
+      transition: all 0.2s;
+    }
+
+    .nav-item svg { width: 24px; height: 24px; }
+    .nav-item.active { background: var(--ink); color: var(--card); }
+
+    @media (min-width: 768px) {
+      .bottom-nav {
+        border: var(--border);
+        border-radius: 999px;
+        width: max-content;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 8px;
+        box-shadow: var(--shadow);
+      }
+    }
+
+    /* ===== RESPONSIVE MÓVIL ===== */
+    @media (max-width: 640px) {
+      .logo { font-size: 1.5rem; }
+      .main-title { font-size: 1.8rem; }
+      .action-buttons { grid-template-columns: 1fr; }
+      .editor-container { padding: 16px; }
+      .profile-brand { font-size: 2rem; }
+    }
+  </style>
 </head>
 <body>
   <div class="app">
 
-
-      <!-- HEADER ACTUALIZADO -->
-  <header class="header">
-    <div class="header-top">
-      <h1 class="logo">MEOW STUDIO</h1>
-      <button class="menu-btn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      </button>
-    </div>
-
-    <!-- TARJETA DE PERFIL -->
-    <div class="profile-card">
-      <span class="card-label">RESUMEN DEL PERFIL</span>
-      <h2 class="profile-brand">@yourbrand</h2>
-      <p class="profile-desc">Tu centro de mando para crear, conectar y publicar.</p>
-      <button class="btn btn-outline">Editar perfil</button>
-
-      <!-- MÉTRICAS (CUADRÍCULA 2x2) -->
-      <div class="metrics-grid">
-        <div class="metric-box">
-          <span class="num">3</span>
-          <span class="label">CUENTAS</span>
+    <!-- ==================== VISTA 1: INICIO ==================== -->
+    <main id="view-inicio" class="view active-view">
+      <header class="header">
+        <div class="header-top">
+          <h1 class="logo">MEOW STUDIO</h1>
+          <button class="menu-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
         </div>
-        <div class="metric-box">
-          <span class="num">12</span>
-          <span class="label">BORRADORES</span>
+
+        <div class="workspace-info">
+          <span class="workspace-label">LOCAL WORKSPACE</span>
+          <h2 class="section-title">Social command center</h2>
+          <p class="section-desc">
+            Explora cómo se verán tus conexiones mientras terminamos la autorización OAuth.
+            Los perfiles PRO se activan con señales verificables de cada plataforma.
+          </p>
+          <button class="btn btn-dark" style="margin-top: 16px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Save workspace
+          </button>
         </div>
-        <div class="metric-box">
-          <span class="num">4</span>
-          <span class="label">PROYECTOS</span>
+      </header>
+
+      <section class="section">
+        <div class="notice">
+          <strong>Modo local activo</strong>
+          <p>Las conexiones son demostrativas y se guardan en esta sesión. No se envían tokens ni se publican piezas hasta configurar OAuth.</p>
         </div>
-        <div class="metric-box">
-          <span class="num">82%</span>
-          <span class="label">PERFIL LISTO</span>
+      </section>
+    </main>
+
+    <!-- ==================== VISTA 2: PERFIL ==================== -->
+    <main id="view-perfil" class="view">
+      <header class="header">
+        <div class="header-top">
+          <h1 class="logo">MI PERFIL</h1>
         </div>
-      </div>
-    </div>
 
-    <!-- INFORMACIÓN WORKSPACE -->
-    <div class="workspace-info">
-      <span class="workspace-label">LOCAL WORKSPACE</span>
-      <h2 class="section-title">Social command center</h2>
-      <p class="section-desc">
-        Explora cómo se verán tus conexiones mientras terminamos la autorización OAuth.
-        Los perfiles PRO se activan con señales verificables de cada plataforma.
-      </p>
-      <button class="btn btn-dark">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Save workspace
-      </button>
-    </div>
-  </header>
+        <div class="profile-card">
+          <span class="card-label">RESUMEN DEL PERFIL</span>
+          <h2 class="profile-brand">@yourbrand</h2>
+          <p class="profile-desc">Tu centro de mando para crear, conectar y publicar.</p>
+          <button class="btn btn-outline" style="margin-bottom: 24px;">Editar perfil</button>
 
-  <!-- ... AQUÍ VA EL RESTO DE TU CONTENIDO (Secciones anteriores) ... -->
+          <div class="metrics-grid">
+            <div class="metric-box"><span class="num">3</span><span class="label">CUENTAS</span></div>
+            <div class="metric-box"><span class="num">12</span><span class="label">BORRADORES</span></div>
+            <div class="metric-box"><span class="num">4</span><span class="label">PROYECTOS</span></div>
+            <div class="metric-box"><span class="num">82%</span><span class="label">PERFIL LISTO</span></div>
+          </div>
+        </div>
+      </header>
+    </main>
 
+    <!-- ==================== VISTA 3: CUENTAS ==================== -->
+    <main id="view-cuentas" class="view">
+      <section class="section">
+        <div class="accounts-header">
+          <h3>Connected accounts</h3>
+          <span class="badge">3 de 6 cuentas conectadas</span>
+          <span class="badge badge-pro">3 PRO ready</span>
+        </div>
 
-  <!-- BARRA DE NAVEGACIÓN INFERIOR (Añadir al final, antes de cerrar </body>) -->
+        <div class="accounts-grid">
+          <!-- Instagram -->
+          <article class="card account connected">
+            <div class="card-top"><span class="platform-icon">📸</span><span class="status connected-tag">Connected</span></div>
+            <h4>@studio.nova</h4><p>Cuenta de creador</p><div class="stat">24.8K</div><span class="tier">BASIC PROFILE</span>
+          </article>
+          <!-- Facebook -->
+          <article class="card account available">
+            <div class="card-top"><span class="platform-icon">📘</span><span class="status available-tag">Available</span></div>
+            <h4>Studio Nova</h4><p>Página pública</p><div class="stat">18.2K</div><span class="tier">BASIC PROFILE</span>
+          </article>
+          <!-- X / Twitter -->
+          <article class="card account available">
+            <div class="card-top"><span class="platform-icon">𝕏</span><span class="status available-tag">Available</span></div>
+            <h4>@studionova</h4><p>Perfil personal</p><div class="stat">9.4K</div><span class="tier">BASIC PROFILE</span>
+          </article>
+          <!-- TikTok -->
+          <article class="card account available">
+            <div class="card-top"><span class="platform-icon">🎵</span><span class="status available-tag">Available</span></div>
+            <h4>@studio.nova</h4><p>Cuenta de creador</p><div class="stat">61.7K</div><span class="tier">BASIC PROFILE</span>
+          </article>
+          <!-- Spotify -->
+          <article class="card account connected">
+            <div class="card-top"><span class="platform-icon">🎧</span><span class="status connected-tag">Connected</span></div>
+            <h4>Studio Nova</h4><p>Artist profile claimed</p><div class="stat">42.1K monthly listeners</div><span class="tier tier-pro">PRO PROFILE</span>
+          </article>
+          <!-- YouTube -->
+          <article class="card account connected">
+            <div class="card-top"><span class="platform-icon">▶️</span><span class="status connected-tag">Connected</span></div>
+            <h4>Studio Nova Official</h4><p>Official Artist Channel</p><div class="stat">12.6K subscribers</div><span class="tier tier-pro">PRO PROFILE</span>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">CONNECTED ACCOUNTS</h2>
+        <div class="connected-row">
+          <article class="card mini connected">
+            <div class="card-top"><span class="status connected-tag">Connected</span></div>
+            <h4>@yourbrand</h4>
+            <div class="mini-stats"><div><strong>1,234</strong><span>Followers</span></div><div><strong>56</strong><span>Posts</span></div><div><strong>7.8%</strong><span>Engagement</span></div></div>
+          </article>
+          <article class="card mini connected">
+            <div class="card-top"><span class="status connected-tag">Connected</span></div>
+            <h4>@yourbrand</h4>
+            <div class="mini-stats"><div><strong>1,234</strong><span>Followers</span></div><div><strong>56</strong><span>Posts</span></div><div><strong>7.8%</strong><span>Engagement</span></div></div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <!-- ==================== VISTA 4: EDITOR ==================== -->
+    <main id="view-editor" class="view">
+      <section class="section editor-section">
+        <div class="breadcrumb"><span>← Volver al inicio</span></div>
+        <div class="editor-header">
+          <span class="workspace-label">WORKSPACE</span>
+          <div class="title-wrap">
+            <svg class="title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            <h2 class="main-title">EDITOR<br>MULTIPLATAFORMA</h2>
+          </div>
+        </div>
+        <hr class="thick-divider">
+        <div class="editor-container">
+          <textarea class="post-textarea" placeholder="Write your post content here..."></textarea>
+          <div class="action-buttons">
+            <button class="btn-editor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg> Add Media</button>
+            <button class="btn-editor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Schedule</button>
+          </div>
+          <div class="post-settings">
+            <h3>Post Settings</h3>
+            <div class="tabs-container">
+              <button class="tab active">Filters</button>
+              <button class="tab">Hashtags</button>
+              <button class="tab">Advanced</button>
+            </div>
+            <div class="slider-group"><label>Brightness</label><input type="range" min="0" max="100" value="40" class="neo-slider"></div>
+            <div class="slider-group"><label>Contrast</label><input type="range" min="0" max="100" value="60" class="neo-slider"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ==================== VISTA 5: CREADOR ==================== -->
+    <main id="view-creador" class="view">
+      <section class="section">
+        <h2 class="section-title">Creator Studio</h2>
+        <p class="section-desc">Analiza tu rendimiento y gestiona tu comunidad.</p>
+        
+        <div class="editor-grid" style="margin-top: 20px;">
+          <div class="preview-box">
+            <span class="live-tag">Live preview</span>
+            <p>Tu contenido aparecerá aquí con el formato de esta plataforma.</p>
+          </div>
+          <div class="preview-box preview-spotify">
+            <span class="live-tag">Spotify</span>
+            <p>Tu contenido aparecerá aquí con el formato de esta plataforma.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+  </div>
+
+  <!-- ==================== BARRA DE NAVEGACIÓN ==================== -->
   <nav class="bottom-nav">
-    <a href="#" class="nav-item active">
+    <a href="#" class="nav-item active" data-target="view-inicio">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       <span>INICIO</span>
     </a>
-    <a href="#" class="nav-item">
+    <a href="#" class="nav-item" data-target="view-perfil">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       <span>PERFIL</span>
     </a>
-    <a href="#" class="nav-item">
+    <a href="#" class="nav-item" data-target="view-cuentas">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
       <span>CUENTAS</span>
     </a>
-    <a href="#" class="nav-item">
+    <a href="#" class="nav-item" data-target="view-editor">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
       <span>EDITOR</span>
     </a>
-    <a href="#" class="nav-item">
+    <a href="#" class="nav-item" data-target="view-creador">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       <span>CREADOR</span>
     </a>
   </nav>
-    </header>
 
-    <!-- SOCIAL COMMAND CENTER -->
-    <section class="section">
-      <h2 class="section-title">Social command center</h2>
-      <p class="section-desc">
-        Explora cómo se verán tus conexiones mientras terminamos la autorización OAuth.
-        Los perfiles PRO se activan con señales verificables de cada plataforma.
-      </p>
-      
-      <!-- EDITOR MULTIPLATAFORMA (NUEVA SECCIÓN) -->
-    <section class="section editor-section">
-      <div class="breadcrumb">
-        <span>← Volver al inicio</span>
-      </div>
+  <!-- ==================== LÓGICA DE NAVEGACIÓN ==================== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const navItems = document.querySelectorAll('.nav-item');
+      const views = document.querySelectorAll('.view');
+      const backBtn = document.querySelector('.breadcrumb span');
 
-      <div class="editor-header">
-        <span class="workspace-label">WORKSPACE</span>
-        <div class="title-wrap">
-          <svg class="title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          <h2 class="main-title">EDITOR<br>MULTIPLATAFORMA</h2>
-        </div>
-      </div>
-
-      <hr class="thick-divider">
-
-      <div class="editor-container">
+      function switchView(targetId) {
+        // Ocultar todas las vistas
+        views.forEach(view => view.classList.remove('active-view'));
         
-        <!-- CAJA DE TEXTO -->
-        <textarea class="post-textarea" placeholder="Write your post content here..."></textarea>
+        // Mostrar la vista seleccionada
+        const targetView = document.getElementById(targetId);
+        if (targetView) targetView.classList.add('active-view');
 
-        <!-- BOTONES DE ACCIÓN -->
-        <div class="action-buttons">
-          <button class="btn-editor">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            Add Media
-          </button>
-          <button class="btn-editor">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            Schedule
-          </button>
-        </div>
+        // Actualizar estado de botones
+        navItems.forEach(item => {
+          if (item.dataset.target === targetId) {
+            item.classList.add('active');
+          } else {
+            item.classList.remove('active');
+          }
+        });
 
-        <!-- CONFIGURACIÓN DEL POST -->
-        <div class="post-settings">
-          <h3>Post Settings</h3>
-          
-          <!-- TABS -->
-          <div class="tabs-container">
-            <button class="tab active">Filters</button>
-            <button class="tab">Hashtags</button>
-            <button class="tab">Advanced</button>
-          </div>
+        // Scroll al tope
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
 
-          <!-- SLIDERS -->
-          <div class="slider-group">
-            <label>Brightness</label>
-            <input type="range" min="0" max="100" value="40" class="neo-slider">
-          </div>
+      // Eventos para la barra inferior
+      navItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+          e.preventDefault();
+          switchView(item.dataset.target);
+        });
+      });
 
-          <div class="slider-group">
-            <label>Contrast</label>
-            <input type="range" min="0" max="100" value="60" class="neo-slider">
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-      <div class="notice">
-        <strong>Modo local activo</strong>
-        <p>Las conexiones son demostrativas y se guardan en esta sesión. No se envían tokens ni se publican piezas hasta configurar OAuth.</p>
-      </div>
-
-      <div class="accounts-header">
-        <h3>Connected accounts</h3>
-        <span class="badge">3 de 6 cuentas conectadas</span>
-        <span class="badge badge-pro">3 PRO ready</span>
-      </div>
-
-      <div class="accounts-grid">
-        <!-- Instagram -->
-        <article class="card account connected">
-          <div class="card-top">
-            <span class="platform-icon">📸</span>
-            <span class="status connected-tag">Connected</span>
-          </div>
-          <h4>@studio.nova</h4>
-          <p>Cuenta de creador</p>
-          <div class="stat">24.8K</div>
-          <span class="tier">BASIC PROFILE</span>
-        </article>
-
-        <!-- Facebook -->
-        <article class="card account available">
-          <div class="card-top">
-            <span class="platform-icon">📘</span>
-            <span class="status available-tag">Available</span>
-          </div>
-          <h4>Studio Nova</h4>
-          <p>Página pública</p>
-          <div class="stat">18.2K</div>
-          <span class="tier">BASIC PROFILE</span>
-        </article>
-
-        <!-- X / Twitter -->
-        <article class="card account available">
-          <div class="card-top">
-            <span class="platform-icon">𝕏</span>
-            <span class="status available-tag">Available</span>
-          </div>
-          <h4>@studionova</h4>
-          <p>Perfil personal</p>
-          <div class="stat">9.4K</div>
-          <span class="tier">BASIC PROFILE</span>
-        </article>
-
-        <!-- TikTok -->
-        <article class="card account available">
-          <div class="card-top">
-            <span class="platform-icon">🎵</span>
-            <span class="status available-tag">Available</span>
-          </div>
-          <h4>@studio.nova</h4>
-          <p>Cuenta de creador</p>
-          <div class="stat">61.7K</div>
-          <span class="tier">BASIC PROFILE</span>
-        </article>
-
-        <!-- Spotify -->
-        <article class="card account connected">
-          <div class="card-top">
-            <span class="platform-icon">🎧</span>
-            <span class="status connected-tag">Connected</span>
-          </div>
-          <h4>Studio Nova</h4>
-          <p>Artist profile claimed</p>
-          <div class="stat">42.1K monthly listeners</div>
-          <span class="tier tier-pro">PRO PROFILE</span>
-        </article>
-
-        <!-- YouTube -->
-        <article class="card account connected">
-          <div class="card-top">
-            <span class="platform-icon">▶️</span>
-            <span class="status connected-tag">Connected</span>
-          </div>
-          <h4>Studio Nova Official</h4>
-          <p>Official Artist Channel</p>
-          <div class="stat">12.6K subscribers</div>
-          <span class="tier tier-pro">PRO PROFILE</span>
-        </article>
-      </div>
-    </section>
-
-    <!-- EDITOR MULTIPLATAFORMA -->
-    <section class="section">
-      <h2 class="section-title">Multiplatform editor</h2>
-      <p class="section-desc">
-        Crea una pieza y adapta el preview para cada cuenta conectada.
-      </p>
-
-      <div class="editor-grid">
-        <div class="preview-box">
-          <span class="live-tag">Live preview</span>
-          <p>Tu contenido aparecerá aquí con el formato de esta plataforma.</p>
-        </div>
-        <div class="preview-box preview-spotify">
-          <span class="live-tag">Spotify</span>
-          <p>Tu contenido aparecerá aquí con el formato de esta plataforma.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONNECTED ACCOUNTS (bloque inferior) -->
-    <section class="section">
-      <h2 class="section-title">CONNECTED ACCOUNTS</h2>
-
-      <div class="connected-row">
-        <article class="card mini connected">
-          <div class="card-top">
-            <span class="status connected-tag">Connected</span>
-          </div>
-          <h4>@yourbrand</h4>
-          <div class="mini-stats">
-            <div><strong>1,234</strong><span>Followers</span></div>
-            <div><strong>56</strong><span>Posts</span></div>
-            <div><strong>7.8%</strong><span>Engagement</span></div>
-          </div>
-        </article>
-
-        <article class="card mini connected">
-          <div class="card-top">
-            <span class="status connected-tag">Connected</span>
-          </div>
-          <h4>@yourbrand</h4>
-          <div class="mini-stats">
-            <div><strong>1,234</strong><span>Followers</span></div>
-            <div><strong>56</strong><span>Posts</span></div>
-            <div><strong>7.8%</strong><span>Engagement</span></div>
-          </div>
-        </article>
-
-        <article class="card mini connected">
-          <div class="card-top">
-            <span class="status connected-tag">Connected</span>
-          </div>
-          <h4>Your Brand</h4>
-          <div class="mini-stats">
-            <div><strong>1,234</strong><span>Followers</span></div>
-            <div><strong>56</strong><span>Posts</span></div>
-            <div><strong>7.8%</strong><span>Engagement</span></div>
-          </div>
-        </article>
-      </div>
-    </section>
-
-  </div>
+      // Evento para el botón "Volver al inicio" del Editor
+      if (backBtn) {
+        backBtn.addEventListener('click', () => switchView('view-inicio'));
+      }
+    });
+  </script>
 </body>
 </html>
