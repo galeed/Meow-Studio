@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MEOW STUDIO</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="app">
+
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-top">
+        <h1 class="logo">MEOW STUDIO</h1>
+        <nav class="nav">
+          <a href="#"><span class="nav-dot"></span> PLATFORMS</a>
+        </nav>
+      </div>
+
+      <!-- PERFIL -->
+      <div class="profile-bar">
+        <div class="profile-info">
+          <h2>Resumen del perfil</h2>
+          <button class="btn btn-outline">Editar perfil</button>
+        </div>
+        <div class="profile-handle">
+          <span class="avatar">🐱</span>
+          <div>
+            <strong>@yourbrand</strong>
+            <p>Tu centro de mando para crear, conectar y publicar.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- MÉTRICAS -->
+      <div class="metrics">
+        <div class="metric"><span class="num">3</span><span>Cuentas</span></div>
+        <div class="metric"><span class="num">12</span><span>Borradores</span></div>
+        <div class="metric"><span class="num">4</span><span>Proyectos</span></div>
+        <div class="metric"><span class="num">82%</span><span>Perfil listo</span></div>
+      </div>
+
+      <span class="workspace-tag">Local workspace</span>
+    </header>
+
+    <!-- SOCIAL COMMAND CENTER -->
+    <section class="section">
+      <h2 class="section-title">Social command center</h2>
+      <p class="section-desc">
+        Explora cómo se verán tus conexiones mientras terminamos la autorización OAuth.
+        Los perfiles PRO se activan con señales verificables de cada plataforma.
+      </p>
+
+      <div class="notice">
+        <strong>Modo local activo</strong>
+        <p>Las conexiones son demostrativas y se guardan en esta sesión. No se envían tokens ni se publican piezas hasta configurar OAuth.</p>
+      </div>
+
+      <div class="accounts-header">
+        <h3>Connected accounts</h3>
+        <span class="badge">3 de 6 cuentas conectadas</span>
+        <span class="badge badge-pro">3 PRO ready</span>
+      </div>
+
+      <div class="accounts-grid">
+        <!-- Instagram -->
+        <article class="card account connected">
+          <div class="card-top">
+            <span class="platform-icon">📸</span>
+            <span class="status connected-tag">Connected</span>
+          </div>
+          <h4>@studio.nova</h4>
+          <p>Cuenta de creador</p>
+          <div class="stat">24.8K</div>
+          <span class="tier">BASIC PROFILE</span>
+        </article>
+
+        <!-- Facebook -->
+        <article class="card account available">
+          <div class="card-top">
+            <span class="platform-icon">📘</span>
+            <span class="status available-tag">Available</span>
+          </div>
+          <h4>Studio Nova</h4>
+          <p>Página pública</p>
+          <div class="stat">18.2K</div>
+          <span class="tier">BASIC PROFILE</span>
+        </article>
+
+        <!-- X / Twitter -->
+        <article class="card account available">
+          <div class="card-top">
+            <span class="platform-icon">𝕏</span>
+            <span class="status available-tag">Available</span>
+          </div>
+          <h4>@studionova</h4>
+          <p>Perfil personal</p>
+          <div class="stat">9.4K</div>
+          <span class="tier">BASIC PROFILE</span>
+        </article>
+
+        <!-- TikTok -->
+        <article class="card account available">
+          <div class="card-top">
+            <span class="platform-icon">🎵</span>
+            <span class="status available-tag">Available</span>
+          </div>
+          <h4>@studio.nova</h4>
+          <p>Cuenta de creador</p>
+          <div class="stat">61.7K</div>
+          <span class="tier">BASIC PROFILE</span>
+        </article>
+
+        <!-- Spotify -->
+        <article class="card account connected">
+          <div class="card-top">
+            <span class="platform-icon">🎧</span>
+            <span class="status connected-tag">Connected</span>
+          </div>
+          <h4>Studio Nova</h4>
+          <p>Artist profile claimed</p>
+          <div class="stat">42.1K monthly listeners</div>
+          <span class="tier tier-pro">PRO PROFILE</span>
+        </article>
+
+        <!-- YouTube -->
+        <article class="card account connected">
+          <div class="card-top">
+            <span class="platform-icon">▶️</span>
+            <span class="status connected-tag">Connected</span>
+          </div>
+          <h4>Studio Nova Official</h4>
+          <p>Official Artist Channel</p>
+          <div class="stat">12.6K subscribers</div>
+          <span class="tier tier-pro">PRO PROFILE</span>
+        </article>
+      </div>
+    </section>
+
+    <!-- EDITOR MULTIPLATAFORMA -->
+    <section class="section">
+      <h2 class="section-title">Multiplatform editor</h2>
+      <p class="section-desc">
+        Crea una pieza y adapta el preview para cada cuenta conectada.
+      </p>
+
+      <div class="editor-grid">
+        <div class="preview-box">
+          <span class="live-tag">Live preview</span>
+          <p>Tu contenido aparecerá aquí con el formato de esta plataforma.</p>
+        </div>
+        <div class="preview-box preview-spotify">
+          <span class="live-tag">Spotify</span>
+          <p>Tu contenido aparecerá aquí con el formato de esta plataforma.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONNECTED ACCOUNTS (bloque inferior) -->
+    <section class="section">
+      <h2 class="section-title">CONNECTED ACCOUNTS</h2>
+
+      <div class="connected-row">
+        <article class="card mini connected">
+          <div class="card-top">
+            <span class="status connected-tag">Connected</span>
+          </div>
+          <h4>@yourbrand</h4>
+          <div class="mini-stats">
+            <div><strong>1,234</strong><span>Followers</span></div>
+            <div><strong>56</strong><span>Posts</span></div>
+            <div><strong>7.8%</strong><span>Engagement</span></div>
+          </div>
+        </article>
+
+        <article class="card mini connected">
+          <div class="card-top">
+            <span class="status connected-tag">Connected</span>
+          </div>
+          <h4>@yourbrand</h4>
+          <div class="mini-stats">
+            <div><strong>1,234</strong><span>Followers</span></div>
+            <div><strong>56</strong><span>Posts</span></div>
+            <div><strong>7.8%</strong><span>Engagement</span></div>
+          </div>
+        </article>
+
+        <article class="card mini connected">
+          <div class="card-top">
+            <span class="status connected-tag">Connected</span>
+          </div>
+          <h4>Your Brand</h4>
+          <div class="mini-stats">
+            <div><strong>1,234</strong><span>Followers</span></div>
+            <div><strong>56</strong><span>Posts</span></div>
+            <div><strong>7.8%</strong><span>Engagement</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>
